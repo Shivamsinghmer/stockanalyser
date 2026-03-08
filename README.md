@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# StockSense - AI-Powered Institutional Stock Analysis Dashboard
 
-## Getting Started
+StockSense is an institutional-grade, real-time stock technical analysis dashboard. It provides powerful AI-driven insights—including EMA trends, RSI, MACD, Bollinger Bands, support/resistance levels, candlestick pattern matching, and comprehensive trade recommendations—all packed in a sleek, premium, Bloomberg-terminal-esque UI.
 
-First, run the development server:
+## 🚀 Features
+
+- **AI Prompt Analysis**: Just ask naturally (e.g., "Analyze HDFC Bank this month").
+- **Real-Time Data Extraction**: Hooked up to an n8n webhook processing powerful agentic workflows.
+- **Premium UI**: Built with Next.js, Tailwind CSS, and shadcn styling.
+- **Indicators Covered**:
+  - Moving Averages (EMA 20, 50, 200)
+  - Momentum (RSI, MACD, Stochastic)
+  - Volatility (Bollinger Bands, ATR)
+  - Raw Price Action (Support, Resistance, Pivot Points)
+  - Candlestick Patterns
+- **Trade Setups**: Explicit Stop Loss, Target Zones, Timeframes, and Risk/Reward Ratios.
+- **Dark & Light Modes**: Seamless theme toggling to fit your trading environment.
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Next.js](https://nextjs.org/) (App Router)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Data Hooking**: Axios API fetching connecting to n8n Webhook.
+- **Fonts**: Inter, Source Serif 4, JetBrains Mono.
+
+## ⚙️ Setup & Installation
+
+Follow these steps to spin up the dashboard locally:
+
+### 1. Clone the repository
+
+```bash
+git clone <your-github-repo-url>
+cd stockanalyser
+```
+
+### 2. Install dependencies
+
+Make sure you have Node installed (v18+ recommended).
+
+```bash
+npm install
+```
+
+### 3. Environment Variables
+
+Create a `.env` file at the root of your project. Copy the template from `.env.example`:
+
+```bash
+cp .env.example .env
+```
+
+Open `.env` and paste your specific n8n webhook URL:
+```env
+NEXT_PUBLIC_N8N_WEBHOOK_URL="https://your_n8n_cloud_url.com/webhook/stock-analysis"
+```
+
+### 4. Run the Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🔗 n8n Workflow Integration
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project relies on an external API (n8n Webhook) for dynamic stock parsing. Ensure that your backend returns data in the designated Markdown table format so that `src/lib/parseAnalysis.ts` can extract figures seamlessly.
 
-## Learn More
+### Example Webhook JSON Payload format expected from Frontend:
+```json
+{
+  "query": "Analyze Tesla stock"
+}
+```
+*or directly by Ticker:*
+```json
+{
+  "company": "Tesla Inc.",
+  "symbol": "TSLA"
+}
+```
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📜 Contributing & Modifying
+If you wish to edit the parsing regex, simply tweak `src/lib/parseAnalysis.ts`. Component files are modular inside `src/components/`, ensuring easy customization over the trading indicators.

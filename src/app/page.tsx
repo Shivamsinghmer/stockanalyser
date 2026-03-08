@@ -39,9 +39,14 @@ export default function Home() {
 
     try {
       const payload = query ? { query } : { company, symbol };
+      const webhookUrl = process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL;
+      
+      if (!webhookUrl) {
+        throw new Error("Webhook URL is not configured. Please check your .env file.");
+      }
       
       const response = await axios.post(
-        "https://siddhantgupta123.app.n8n.cloud/webhook/stock-analysis",
+        webhookUrl,
         payload,
         { timeout: 120000 }
       );
